@@ -24,7 +24,6 @@ namespace Store.G04.Api.Controllers
         
         public async Task<IActionResult> GetAllProduct([FromQuery] ProductSpecParams productSpec)//endPoint
         {
-            var result= await _ServiceProduct.GetAllProductAsync(productSpec);
 
             return Ok(result);
 

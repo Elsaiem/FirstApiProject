@@ -57,7 +57,7 @@ namespace Store.G04.Repository.Repositories
         {
          return await SpecifcationEvaluator<TEntity,Tkey>.GeneratQuery(_Context.Set<TEntity>(),spec).ToListAsync();
         }
-
+      
         public async Task<TEntity> GetWithSpecAsync(ISpecification<TEntity, Tkey> spec)
         {
             return await SpecifcationEvaluator<TEntity, Tkey>.GeneratQuery(_Context.Set<TEntity>(), spec).FirstOrDefaultAsync();
@@ -66,7 +66,7 @@ namespace Store.G04.Repository.Repositories
         {
             return SpecifcationEvaluator<TEntity,Tkey>.GeneratQuery(_Context.Set<TEntity>(),spec);
         }
-
+       
         public async Task<int> GetCountAsync(ISpecification<TEntity, Tkey> spec)
         {
          return await ApplySpecification(spec).CountAsync(); 
