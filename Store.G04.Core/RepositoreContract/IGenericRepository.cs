@@ -23,8 +23,8 @@ namespace Store.G04.Core.RepositoreContract
 
 
        void Update(TEntity entity); 
-       void Delete(TEntity entity);  
-        
+       void Delete(TEntity entity);    
+
 
       
 
