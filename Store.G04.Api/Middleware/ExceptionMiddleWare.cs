@@ -32,8 +32,11 @@ namespace Store.G04.Api.Middleware
                      new ApiExceptionResponse(StatusCodes.Status500InternalServerError, ex.Message, ex.StackTrace.ToString())
                     :new ApiExceptionResponse(StatusCodes.Status500InternalServerError) ;
 
-
-                var json= JsonSerializer.Serialize(response);
+                var options = new JsonSerializerOptions()
+                {
+                    PropertyNamingPolicy = JsonNamingPolicy.CamelCase
+                };
+                var json= JsonSerializer.Serialize(response,options);
 
               await  context.Response.WriteAsync(json);
 

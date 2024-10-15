@@ -3,6 +3,10 @@ using Store.G04.Api.Middleware;
 using Store.G04.Repository.Data.Contexts;
 using Store.G04.Repository.Data;
 using Microsoft.EntityFrameworkCore;
+using Store.G04.Repository.Identity.Context;
+using Microsoft.AspNetCore.Identity;
+using Store.G04.Core.Entities.Identity;
+using Store.G04.Repository.Identity;
 
 namespace Store.G04.Api.Helper
 {
@@ -22,11 +26,17 @@ namespace Store.G04.Api.Helper
             using var scope = app.Services.CreateScope();
             var service = scope.ServiceProvider;
             var context = service.GetRequiredService<StoreDbContext>();
+            var contextIdentity = service.GetRequiredService<StoreIdentityDbContext>();
+            var USerManger = service.GetRequiredService<UserManager<AppUser>>();
             var looger = service.GetRequiredService<ILoggerFactory>();
             try
             {
                 await context.Database.MigrateAsync();
                 await StoreDbContextSeed.SeedAsync(context);
+
+                await contextIdentity.Database.MigrateAsync();
+                await StoreIdentityDbContextSeed.SeedAppUserAsync(USerManger);
+
             }
 
             catch (Exception ex)
@@ -56,6 +66,8 @@ namespace Store.G04.Api.Helper
 
             app.UseHttpsRedirection();
 
+
+            app.UseAuthentication();
             app.UseAuthorization();
 
 

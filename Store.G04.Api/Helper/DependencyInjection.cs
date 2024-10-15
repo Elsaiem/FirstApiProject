@@ -11,6 +11,16 @@ using Store.G04.Api.Errors;
 using Store.G04.Core.RepositoreContract;
 using StackExchange.Redis;
 using Store.G04.Core.Mapping.Busket;
+using Store.G04.Service.Services.Cached;
+using Store.G04.Repository.Identity.Context;
+using Store.G04.Core.Entities.Identity;
+using Microsoft.AspNetCore.Identity;
+using Store.G04.Service.Services.Users;
+using Store.G04.Service.Services.Tokens;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
+using Store.G04.Core.Mapping.Auth;
 
 namespace Store.G04.Api.Helper
 {
@@ -21,12 +31,14 @@ namespace Store.G04.Api.Helper
         {
 
             services.AddBuildService();
+            services.AddIdentityService();
             services.AddSwaggerdService();
             services.AddDataBaseCOnnectiondService(configuration);
             services.AddUSerDEfinedCOnnectiondService();
             services.AddAutoMaperCOnnectiondService(configuration);
             services.ConfigureInvalidModelStateResponseService();
             services.AddRedisService(configuration);
+            services.AddAuthenticationService(configuration);
 
             return services;    
         }
@@ -36,6 +48,16 @@ namespace Store.G04.Api.Helper
 
 
             services.AddControllers();
+
+
+
+           return services;
+        }     private static IServiceCollection AddIdentityService(this IServiceCollection services) {
+
+
+            services.AddIdentity<AppUser,IdentityRole>()
+                     .AddEntityFrameworkStores<StoreIdentityDbContext>();
+
 
 
 
@@ -58,6 +80,11 @@ namespace Store.G04.Api.Helper
             {
                 options.UseSqlServer(configuration.GetConnectionString("DefaultConnection"));
             });
+            services.AddDbContext<StoreIdentityDbContext>(options =>
+            {
+                options.UseSqlServer(configuration.GetConnectionString("IdentityConnection"));
+            });
+
 
 
             return services;
@@ -68,6 +95,10 @@ namespace Store.G04.Api.Helper
            services.AddScoped<IServiceProduct, ProductService>();
            services.AddScoped<IUnitOfWork, UnitOfWork>();
            services.AddScoped<IBusketRepository, BusketRepository>();
+           services.AddScoped<ICacheService,CachedService>();
+           services.AddScoped<IUserService,UserServices>();
+           services.AddScoped<ITokenService, TokenService>();
+             
 
 
             return services;
@@ -77,6 +108,7 @@ namespace Store.G04.Api.Helper
 
             services.AddAutoMapper(M => M.AddProfile(new ProductProfile(configuration)));
             services.AddAutoMapper(M => M.AddProfile(new BusketProfile()));
+            services.AddAutoMapper(M => M.AddProfile(new AuthentictionProfile()));
 
 
             return services;
@@ -129,6 +161,37 @@ namespace Store.G04.Api.Helper
 
             });
 
+
+
+
+
+            return services;
+        }
+        private static IServiceCollection AddAuthenticationService(this IServiceCollection services, IConfiguration configuration)
+        {
+
+            services.AddAuthentication(options =>
+            {
+                options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;  
+               
+            
+            }
+            ).AddJwtBearer(options=>
+            {
+                options.TokenValidationParameters = new Microsoft.IdentityModel.Tokens.TokenValidationParameters()
+                {
+                    ValidateIssuer = true,
+                    ValidIssuer = configuration["Jwt:Issuer"],
+                    ValidateAudience = true,
+                    ValidAudience = configuration["Jwt:Audience"],
+                    ValidateLifetime = true,
+                    ValidateIssuerSigningKey = true,
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["Jwt:Key"]))
+
+                };
+            
+            });  
 
 
 

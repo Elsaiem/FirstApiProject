@@ -1,4 +1,5 @@
 ﻿using Store.G04.Core.Entities;
+using Store.G04.Core.Entities.Orderr;
 using Store.G04.Repository.Data.Contexts;
 using System;
 using System.Collections.Generic;
@@ -51,6 +52,21 @@ namespace Store.G04.Repository.Data
                 {
                     await context.Products.AddRangeAsync(products);
                   
+
+                }
+
+
+            }
+
+            if (context.DeliveryMethods.Count() == 0)
+            {
+                var DeliverysData = File.ReadAllText(@"../Store.G04.Repository/Data/DataSeed/delivery.json");
+                var Delivery = JsonSerializer.Deserialize<List<DeliveryMethod>>(DeliverysData);
+
+                if (Delivery is not null && Delivery.Count() > 0)
+                {
+                    await context.DeliveryMethods.AddRangeAsync(Delivery);
+
 
                 }
 

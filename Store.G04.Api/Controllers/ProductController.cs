@@ -1,5 +1,7 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Store.G04.Api.Attributes;
 using Store.G04.Api.Errors;
 using Store.G04.Core.Dtos;
 using Store.G04.Core.Dtos.Products;
@@ -26,7 +28,8 @@ namespace Store.G04.Api.Controllers
         [ProducesResponseType(typeof(PaginationResponse<ProductDto>),StatusCodes.Status200OK)]
 
         [HttpGet]
-        
+        [Cached(100)]
+        [Authorize]
         public async Task<ActionResult<PaginationResponse<ProductDto>>> GetAllProduct([FromQuery] ProductSpecParams productSpec)//endPoint
         {
 
@@ -39,6 +42,8 @@ namespace Store.G04.Api.Controllers
         [ProducesResponseType(typeof(IEnumerable<TypeBrandDto>), StatusCodes.Status200OK)]
 
         [HttpGet("Brands")]
+        [Authorize]
+
         public async Task<ActionResult<IEnumerable<TypeBrandDto>>> GetAllBrands()//endPoint
         {
             var result= await _ServiceProduct.GetAllBrandsAsync();
@@ -49,6 +54,8 @@ namespace Store.G04.Api.Controllers
         [ProducesResponseType(typeof(IEnumerable<TypeBrandDto>), StatusCodes.Status200OK)]
 
         [HttpGet("Types")]
+        [Authorize]
+
         public async Task<ActionResult<IEnumerable<TypeBrandDto>>> GetAllTypes()//endPoint
         {
             var result= await _ServiceProduct.GetAllTypesAsync();
@@ -62,6 +69,8 @@ namespace Store.G04.Api.Controllers
         [ProducesResponseType(typeof(ApiErrorResponse), StatusCodes.Status404NotFound)]
      
         [HttpGet("{id}")]
+        [Authorize]
+
         public async Task<IActionResult> GetProductById(int? id)//endPoint
         {
             if(id is null)
