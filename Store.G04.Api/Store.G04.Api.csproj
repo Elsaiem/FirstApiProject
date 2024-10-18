@@ -4,6 +4,7 @@
     <TargetFramework>net8.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
+    <UserSecretsId>4039a805-edd0-42d5-823a-565c25b53963</UserSecretsId>
   </PropertyGroup>
 
   <ItemGroup>
@@ -12,11 +13,16 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
+    <PackageReference Include="Stripe.net" Version="46.2.1" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.4.0" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\Store.G04.Service\Store.G04.Service.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Helper\Attributes\" />
   </ItemGroup>
 
 </Project>

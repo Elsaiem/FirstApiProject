@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Store.G04.Api.Attributes;
 using Store.G04.Api.Errors;
 using Store.G04.Core.Dtos.Busket;
 using Store.G04.Core.Entities;
@@ -26,6 +27,7 @@ namespace Store.G04.Api.Controllers
        
 
         [HttpGet]
+        [CachedAttribute(300)]
         public async Task<ActionResult<CustomerBusket>> GetBusket(string? Id)
         {
             if (Id == null)

@@ -13,10 +13,11 @@ namespace Store.G04.Core.Mapping.Busket
     {
         public BusketProfile() {
 
-            CreateMap<CustomerBusket,CustomerBusketDto>().ReverseMap();
-        
-        
-        
+            CreateMap<CustomerBusket, CustomerBusketDto>().ReverseMap();
+            CreateMap<CustomerBusketDto,CustomerBusket>().ReverseMap();
+
+
+
         }
 
 

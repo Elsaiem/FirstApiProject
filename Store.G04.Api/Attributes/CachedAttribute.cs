@@ -13,9 +13,6 @@ namespace Store.G04.Api.Attributes
         {
             _ExpireTime = expireTime;
 
-
-
-
         }
 
         public async Task OnActionExecutionAsync(ActionExecutingContext context, ActionExecutionDelegate next)
@@ -36,7 +33,7 @@ namespace Store.G04.Api.Attributes
                 context.Result=contentResult;
                 return;
             }
-            var executedContext=await next();
+            var executedContext=await next.Invoke();
             if (executedContext.Result is OkObjectResult response) {
             
             

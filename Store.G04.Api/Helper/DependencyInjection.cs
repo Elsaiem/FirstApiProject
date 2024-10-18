@@ -21,6 +21,10 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using Store.G04.Core.Mapping.Auth;
+using Store.G04.Core.Mapping.Orders;
+using Store.G04.Service.Services.Orderrs;
+using Store.G04.Service.Services.Busket;
+using Store.G04.Service.Services.Payments;
 
 namespace Store.G04.Api.Helper
 {
@@ -69,7 +73,7 @@ namespace Store.G04.Api.Helper
             services.AddEndpointsApiExplorer();
             services.AddSwaggerGen();
 
-
+             
 
             return services;
         } 
@@ -95,9 +99,12 @@ namespace Store.G04.Api.Helper
            services.AddScoped<IServiceProduct, ProductService>();
            services.AddScoped<IUnitOfWork, UnitOfWork>();
            services.AddScoped<IBusketRepository, BusketRepository>();
-           services.AddScoped<ICacheService,CachedService>();
+           services.AddSingleton<ICacheService,CachedService>();//
            services.AddScoped<IUserService,UserServices>();
            services.AddScoped<ITokenService, TokenService>();
+           services.AddScoped<IBusketService, BusketService>();
+           services.AddScoped<IOrderService, OrderService>();
+           services.AddScoped<IPaymentService, PaymentService>();
              
 
 
@@ -109,6 +116,7 @@ namespace Store.G04.Api.Helper
             services.AddAutoMapper(M => M.AddProfile(new ProductProfile(configuration)));
             services.AddAutoMapper(M => M.AddProfile(new BusketProfile()));
             services.AddAutoMapper(M => M.AddProfile(new AuthentictionProfile()));
+            services.AddAutoMapper(M => M.AddProfile(new OrderProfile(configuration)));
 
 
             return services;

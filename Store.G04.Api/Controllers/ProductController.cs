@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Store.G04.Api.Attributes;
 using Store.G04.Api.Errors;
+
 using Store.G04.Core.Dtos;
 using Store.G04.Core.Dtos.Products;
 using Store.G04.Core.Helper;
@@ -24,11 +25,10 @@ namespace Store.G04.Api.Controllers
 
 
 
-
+       
         [ProducesResponseType(typeof(PaginationResponse<ProductDto>),StatusCodes.Status200OK)]
-
         [HttpGet]
-        [Cached(100)]
+        [Cached(300)]
         [Authorize]
         public async Task<ActionResult<PaginationResponse<ProductDto>>> GetAllProduct([FromQuery] ProductSpecParams productSpec)//endPoint
         {
@@ -42,6 +42,8 @@ namespace Store.G04.Api.Controllers
         [ProducesResponseType(typeof(IEnumerable<TypeBrandDto>), StatusCodes.Status200OK)]
 
         [HttpGet("Brands")]
+        [Cached(300)]
+
         [Authorize]
 
         public async Task<ActionResult<IEnumerable<TypeBrandDto>>> GetAllBrands()//endPoint
@@ -54,6 +56,8 @@ namespace Store.G04.Api.Controllers
         [ProducesResponseType(typeof(IEnumerable<TypeBrandDto>), StatusCodes.Status200OK)]
 
         [HttpGet("Types")]
+        [Cached(300)]
+
         [Authorize]
 
         public async Task<ActionResult<IEnumerable<TypeBrandDto>>> GetAllTypes()//endPoint

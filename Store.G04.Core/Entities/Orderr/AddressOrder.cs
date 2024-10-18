@@ -6,13 +6,13 @@ using System.Threading.Tasks;
 
 namespace Store.G04.Core.Entities.Orderr
 {
-    public class Address
+    public class AddressOrder
     {
-        public Address()
+        public AddressOrder()
         {
         }
 
-        public Address(string fName, string lName, string city, string steet, string country)
+        public AddressOrder(string fName, string lName, string city, string steet, string country)
         {
             FName = fName;
             LName = lName;
